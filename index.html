@@ -206,15 +206,18 @@
   .cartao p { font-weight: 300; }
   .cartao p strong { font-weight: 500; }
 
-  .aviso-copia { font-size: 13px; color: var(--text-2); text-align: center; font-weight: 300; }
   .refazer { justify-self: center; }
-  .toast {
-    position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px));
-    transform: translateX(-50%);
-    background: var(--text); color: var(--bg);
-    padding: 10px 18px; border-radius: 999px; font-size: 14px;
-    max-width: calc(100% - 32px);
-  }
+
+  .campo-tel { display: grid; grid-template-columns: minmax(0, 11em) minmax(0, 1fr); gap: 8px; }
+  .campo input[aria-invalid="true"] { border-color: var(--accent); }
+  .consentimento { display: grid; grid-template-columns: 20px 1fr; gap: 10px; align-items: start; font-size: 13.5px; font-weight: 300; cursor: pointer; }
+  .consentimento input { width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--accent); }
+  .privacidade { font-size: 13px; color: var(--text-2); }
+  .privacidade summary { cursor: pointer; color: var(--accent); font-weight: 500; }
+  .privacidade p { margin-top: 8px; font-weight: 300; }
+  .armadilha { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .erro { color: var(--accent); font-size: 14px; font-weight: 500; }
+  .demo { font-size: 13px; padding: 10px 12px; border-radius: 10px; background: var(--accent-soft); }
 
   .rodape { text-align: center; font-size: 12px; color: var(--text-2); font-weight: 300; }
 
@@ -269,8 +272,6 @@
   <p class="rodape" id="rodape">Projetos de interiores online</p>
 </main>
 
-<div class="toast" id="toast" role="status" hidden></div>
-
 <script>
 /* ============================================================
    CONFIGURAÇÃO: edite aqui seus dados e links.
@@ -283,8 +284,14 @@ const CONFIG = {
   bio: "Projetos de interiores online na Europa.",
   cau: "",             // ex.: "CAU A000000-0"
 
-  // Contato. O WhatsApp ainda não foi definido: enquanto estiver vazio,
-  // o botão de conversa copia o resumo das respostas para a pessoa enviar.
+  // Endereço do Google Apps Script que grava as respostas na sua planilha.
+  // Veja CONFIGURAR-PLANILHA.md. Vazio = modo de demonstração (nada é salvo).
+  endpoint: "",
+
+  // E-mail para pedidos de privacidade (aparece no aviso de privacidade).
+  emailPrivacidade: "",
+
+  // Contatos opcionais. O WhatsApp ainda não foi definido.
   whatsapp: "",        // DDI + número, só dígitos. Ex.: "351912345678"
   instagram: "",       // usuário sem @. Ex.: "gabrielepinheiro.interiores"
 
@@ -300,6 +307,15 @@ const PAISES = [
   "Grécia", "Irlanda", "Itália", "Luxemburgo", "Noruega", "Países Baixos",
   "Polônia", "Portugal", "Reino Unido", "Suécia", "Suíça",
 ];
+
+/* Códigos de país para o celular. */
+const DDI = {
+  "Alemanha": "49", "Áustria": "43", "Bélgica": "32", "Dinamarca": "45", "Espanha": "34",
+  "Finlândia": "358", "França": "33", "Grécia": "30", "Irlanda": "353", "Itália": "39",
+  "Luxemburgo": "352", "Noruega": "47", "Países Baixos": "31", "Polônia": "48",
+  "Portugal": "351", "Reino Unido": "44", "Suécia": "46", "Suíça": "41",
+  "Brasil": "55", "Estados Unidos / Canadá": "1",
+};
 
 const PERGUNTAS = [
   {
@@ -383,6 +399,8 @@ function perfil(r) {
   return "escopo";
 }
 
+const NOME_PERFIL = { escopo: "Dentro do escopo", pesquisando: "Ainda pesquisando", reforma: "Reforma maior" };
+
 /* Trechos usados na frase do resultado "dentro do escopo". */
 const TRECHOS = {
   ambientes: { um: "um ambiente", dois: "alguns ambientes", casa: "grande parte da casa" },
@@ -395,6 +413,60 @@ const TRECHOS = {
 };
 
 /* ============================================================
+   ENVIO PARA A PLANILHA
+   ============================================================ */
+function novoId() {
+  if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+  return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+}
+
+function origem() {
+  try {
+    const utm = new URLSearchParams(location.search).get("utm_source");
+    if (utm) return utm;
+    return document.referrer ? new URL(document.referrer).hostname : "direto";
+  } catch {
+    return "direto";
+  }
+}
+
+/* Envia um registro para o Google Apps Script. Retorna true se saiu do aparelho. */
+async function enviar(dados) {
+  if (!CONFIG.endpoint) {
+    console.info("Modo de demonstração: nada foi salvo.", dados);
+    return true;
+  }
+  try {
+    // "no-cors" + texto simples: é o formato que o Apps Script aceita vindo de outro site.
+    await fetch(CONFIG.endpoint, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(dados),
+      keepalive: true,
+    });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/* Respostas em texto legível, no formato gravado na planilha. */
+function respostasLegiveis() {
+  const texto = (id) => textoResposta(PERGUNTAS.find((p) => p.id === id));
+  return {
+    resultado: NOME_PERFIL[perfil(respostas)],
+    momento: texto("momento"),
+    ambientes: texto("ambientes"),
+    mudanca: texto("mudanca"),
+    objetivos: texto("objetivos"),
+    pais: respostas.local?.pais || "",
+    cidade: respostas.local?.cidade || "",
+    inicio: texto("inicio"),
+  };
+}
+
+/* ============================================================
    INTERFACE
    ============================================================ */
 const $ = (s) => document.querySelector(s);
@@ -404,84 +476,22 @@ const primeiroNome = CONFIG.nome.split(" ")[0];
 let passo = 0;
 let historico = [];
 let respostas = {};
+let sessao = { id: novoId(), diagnosticoEnviado: false, contatoEnviado: false };
 
 function mostrar(nome) {
   for (const [k, el] of Object.entries(telas)) el.hidden = k !== nome;
   window.scrollTo({ top: 0 });
 }
 
-function toast(texto) {
-  const t = $("#toast");
-  t.textContent = texto;
-  t.hidden = false;
-  clearTimeout(toast.timer);
-  toast.timer = setTimeout(() => (t.hidden = true), 3200);
-}
-
-async function copiar(texto) {
-  try {
-    await navigator.clipboard.writeText(texto);
-    return true;
-  } catch {
-    const area = document.createElement("textarea");
-    area.value = texto;
-    area.setAttribute("readonly", "");
-    area.style.position = "fixed";
-    area.style.opacity = "0";
-    document.body.appendChild(area);
-    area.select();
-    let ok = false;
-    try { ok = document.execCommand("copy"); } catch { ok = false; }
-    area.remove();
-    return ok;
-  }
-}
-
-const opcoesDe = (p) => (typeof p.opcoes === "function" ? p.opcoes() : p.opcoes || []);
+const opcoesDe = (p) => p.opcoes || [];
 
 function textoResposta(p) {
   const r = respostas[p.id];
   if (r == null) return "";
   if (p.tipo === "local") return [r.cidade, r.pais].filter(Boolean).join(", ");
-  if (p.tipo === "multipla") return opcoesDe(p).filter((o) => r.includes(o.id)).map((o) => o.label.toLowerCase()).join("; ");
+  if (p.tipo === "multipla") return opcoesDe(p).filter((o) => r.includes(o.id)).map((o) => o.label).join("; ");
   const o = opcoesDe(p).find((x) => x.id === r);
   return o ? o.label : "";
-}
-
-function montarMensagem() {
-  const linhas = PERGUNTAS
-    .map((p) => ({ p, t: textoResposta(p) }))
-    .filter((x) => x.t)
-    .map((x) => `• ${x.p.resumo}: ${x.t}`)
-    .join("\n");
-  return `Olá, ${primeiroNome}! Respondi as perguntas do seu link da bio.\n\n${linhas}\n\nQuero conversar sobre meu projeto.`;
-}
-
-/* Para onde vai o botão de conversa, conforme o que estiver configurado. */
-function destinoContato(mensagem) {
-  if (CONFIG.whatsapp) return { href: `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(mensagem)}`, copiarAntes: false };
-  if (CONFIG.instagram) return { href: `https://ig.me/m/${CONFIG.instagram}`, copiarAntes: true };
-  return null;
-}
-
-function botaoConversa(texto) {
-  const destino = destinoContato(montarMensagem());
-  if (destino && !destino.copiarAntes)
-    return `<a class="btn" href="${esc(destino.href)}" target="_blank" rel="noopener">${texto}</a>`;
-  if (destino)
-    return `<a class="btn" href="${esc(destino.href)}" target="_blank" rel="noopener" data-copiar>${texto}</a>
-            <p class="aviso-copia">Ao tocar, o resumo das suas respostas é copiado. É só colar na conversa.</p>`;
-  return `<button class="btn" type="button" data-copiar>${texto}</button>
-          <p class="aviso-copia">Ao tocar, o resumo das suas respostas é copiado para você me enviar.</p>`;
-}
-
-function ligarCopia(raiz) {
-  raiz.querySelectorAll("[data-copiar]").forEach((el) =>
-    el.addEventListener("click", async () => {
-      const ok = await copiar(montarMensagem());
-      toast(ok ? "Resumo copiado" : "Não foi possível copiar automaticamente.");
-    })
-  );
 }
 
 /* ---------- perguntas ---------- */
@@ -493,7 +503,7 @@ function renderPergunta() {
 
   const box = $("#pergunta");
   const tinhaFoco = box.contains(document.activeElement);
-  box.classList.remove("entra"); void box.offsetWidth; box.classList.add("entra");
+  box.classList.remove("entra"); void box.offsetWidth;
   box.className = `pergunta entra ${p.tipo}`;
 
   let corpo = "";
@@ -512,11 +522,11 @@ function renderPergunta() {
         </div>
         <div class="campo" id="campo-outro-wrap" ${ehOutro ? "" : "hidden"}>
           <label for="campo-outro">Qual país?</label>
-          <input id="campo-outro" type="text" autocomplete="country-name" value="${ehOutro ? esc(r.pais) : ""}">
+          <input id="campo-outro" type="text" autocomplete="country-name" maxlength="60" value="${ehOutro ? esc(r.pais) : ""}">
         </div>
         <div class="campo">
           <label for="campo-cidade">Cidade</label>
-          <input id="campo-cidade" type="text" autocomplete="address-level2" value="${esc(r.cidade || "")}">
+          <input id="campo-cidade" type="text" autocomplete="address-level2" maxlength="80" value="${esc(r.cidade || "")}">
         </div>
       </div>
       <button class="btn" type="button" id="continuar">Continuar</button>`;
@@ -617,8 +627,14 @@ function linkBotao(href, texto, sec) {
 
 function renderResultado() {
   const tipo = perfil(respostas);
-  let html = "";
 
+  // registra a resposta (sem dados pessoais) uma vez por diagnóstico concluído
+  if (!sessao.diagnosticoEnviado) {
+    sessao.diagnosticoEnviado = true;
+    enviar({ tipo: "diagnostico", id: sessao.id, origem: origem(), ...respostasLegiveis() });
+  }
+
+  let html = "";
   if (tipo === "escopo") {
     const a = TRECHOS.ambientes[respostas.ambientes];
     const b = TRECHOS.momento[respostas.momento];
@@ -631,7 +647,7 @@ function renderResultado() {
         <h3>Como funciona</h3>
         <p>Meus projetos de interiores são realizados 100% online.</p>
         <p>A partir da sua casa, da rotina de quem vive nela, do que precisa permanecer e do investimento disponível, eu desenvolvo as decisões do ambiente como um conjunto: layout, mobiliário, iluminação, cores, materiais, têxteis, decoração e os elementos necessários para que você consiga colocar o projeto em prática.</p>
-        ${botaoConversa("Quero conversar sobre meu projeto")}
+        <button class="btn" type="button" data-contato>Quero conversar sobre meu projeto</button>
       </article>`;
   }
 
@@ -655,19 +671,20 @@ function renderResultado() {
         <p>Meu trabalho é focado em projetos de interiores e nas decisões que constroem os ambientes: layout, mobiliário, iluminação, materiais, cores, marcenaria pontual, têxteis e decoração.</p>
         <p>Quando o imóvel envolve alterações estruturais, grandes mudanças de instalações ou uma reforma de maior complexidade, pode ser necessário contar também com profissionais responsáveis por essas etapas da obra.</p>
         <p>Se o projeto de interiores fizer parte desse processo, podemos conversar para entender o seu caso.</p>
-        ${botaoConversa("Quero contar um pouco mais sobre meu projeto")}
+        <button class="btn" type="button" data-contato>Quero contar um pouco mais sobre meu projeto</button>
       </article>`;
   }
 
   telas.resultado.innerHTML = `
     <div class="topo">
       <button class="voltar" type="button" id="voltar-resultado">← Voltar</button>
-      <span class="passo"></span>
     </div>
     ${html}
     <button class="voltar refazer" type="button" id="refazer">Responder novamente</button>`;
 
-  ligarCopia(telas.resultado);
+  telas.resultado.querySelectorAll("[data-contato]").forEach((b) =>
+    b.addEventListener("click", () => (sessao.contatoEnviado ? renderObrigado() : renderContato()))
+  );
   $("#voltar-resultado").addEventListener("click", () => {
     passo = historico.pop() ?? 0;
     renderPergunta();
@@ -677,10 +694,150 @@ function renderResultado() {
   mostrar("resultado");
 }
 
+/* ---------- formulário de contato ---------- */
+function renderContato() {
+  const ddiPadrao = DDI[respostas.local?.pais] || "";
+  const avisoPrivacidade = `
+    Seu nome, e-mail, celular e as respostas deste formulário são usados apenas para eu entrar em contato sobre o seu projeto.
+    Eles ficam guardados numa planilha privada no Google, a que só eu tenho acesso, e não são compartilhados com mais ninguém.
+    As respostas às perguntas também são registradas sem identificação, para estatística.
+    Você pode pedir para ver, corrigir ou apagar seus dados a qualquer momento${CONFIG.emailPrivacidade ? ` pelo e-mail <strong>${esc(CONFIG.emailPrivacidade)}</strong>` : ", é só me pedir"}.`;
+
+  telas.resultado.innerHTML = `
+    <div class="topo">
+      <button class="voltar" type="button" id="voltar-contato">← Voltar</button>
+    </div>
+    <form class="cartao entra" id="form-contato" novalidate>
+      <h2>Para eu entrar em contato com você</h2>
+      <p>Deixe seus dados e eu te procuro para conversarmos sobre o seu projeto.</p>
+      ${CONFIG.endpoint ? "" : `<p class="demo">Modo de demonstração: o endereço da planilha ainda não foi configurado, então nada é salvo.</p>`}
+      <div class="campos">
+        <div class="campo">
+          <label for="contato-nome">Nome</label>
+          <input id="contato-nome" name="nome" type="text" autocomplete="name" maxlength="80" required>
+        </div>
+        <div class="campo">
+          <label for="contato-email">E-mail</label>
+          <input id="contato-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="120" required>
+        </div>
+        <div class="campo">
+          <label for="contato-numero">Celular</label>
+          <div class="campo-tel">
+            <select id="contato-ddi" aria-label="Código do país">
+              <option value="">País</option>
+              ${Object.entries(DDI).map(([pais, cod]) => `<option value="${cod}" ${cod === ddiPadrao ? "selected" : ""}>${pais} (+${cod})</option>`).join("")}
+              <option value="outro">Outro código</option>
+            </select>
+            <input id="contato-numero" name="celular" type="tel" autocomplete="tel-national" inputmode="tel" maxlength="20" required>
+          </div>
+          <div class="campo" id="ddi-outro-wrap" hidden>
+            <label for="contato-ddi-outro">Código do país (só números)</label>
+            <input id="contato-ddi-outro" type="text" inputmode="numeric" maxlength="4">
+          </div>
+        </div>
+        <div class="armadilha" aria-hidden="true">
+          <label for="contato-site">Site</label>
+          <input id="contato-site" name="site" type="text" tabindex="-1" autocomplete="off">
+        </div>
+        <label class="consentimento" for="contato-consentimento">
+          <input id="contato-consentimento" type="checkbox" required>
+          <span>Autorizo ${esc(primeiroNome)} a usar estes dados para entrar em contato comigo sobre o meu projeto.</span>
+        </label>
+        <details class="privacidade">
+          <summary>Como seus dados são usados</summary>
+          <p>${avisoPrivacidade}</p>
+        </details>
+      </div>
+      <p class="erro" id="contato-erro" role="alert" hidden></p>
+      <button class="btn" type="submit" id="contato-enviar">Enviar</button>
+    </form>`;
+
+  const form = $("#form-contato");
+  const ddi = $("#contato-ddi");
+  const ddiOutroWrap = $("#ddi-outro-wrap");
+  ddi.addEventListener("change", () => {
+    ddiOutroWrap.hidden = ddi.value !== "outro";
+    if (ddi.value === "outro") $("#contato-ddi-outro").focus();
+  });
+  $("#voltar-contato").addEventListener("click", renderResultado);
+  form.addEventListener("input", () => { $("#contato-erro").hidden = true; });
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const erro = $("#contato-erro");
+    const nome = $("#contato-nome").value.trim();
+    const email = $("#contato-email").value.trim();
+    const codigo = (ddi.value === "outro" ? $("#contato-ddi-outro").value : ddi.value).replace(/\D/g, "");
+    const numero = $("#contato-numero").value.replace(/\D/g, "");
+    const consentiu = $("#contato-consentimento").checked;
+
+    const problemas = [];
+    const marcar = (id, ok) => $(id).setAttribute("aria-invalid", String(!ok));
+    marcar("#contato-nome", nome.length >= 2);
+    if (nome.length < 2) problemas.push("seu nome");
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+    marcar("#contato-email", emailOk);
+    if (!emailOk) problemas.push("um e-mail válido");
+    const telOk = codigo.length >= 1 && numero.length >= 6 && numero.length <= 15;
+    marcar("#contato-numero", telOk);
+    if (!telOk) problemas.push("o celular com o código do país");
+    if (!consentiu) problemas.push("a autorização de contato");
+
+    if (problemas.length) {
+      erro.textContent = `Falta preencher ${problemas.join(", ").replace(/, ([^,]*)$/, " e $1")}.`;
+      erro.hidden = false;
+      return;
+    }
+    erro.hidden = true;
+
+    const botao = $("#contato-enviar");
+    botao.disabled = true;
+    botao.textContent = "Enviando…";
+    const ok = await enviar({
+      tipo: "contato",
+      id: sessao.id,
+      site: $("#contato-site").value,
+      nome,
+      email,
+      celular: `+${codigo} ${numero}`,
+      consentimento: "Sim",
+      origem: origem(),
+      ...respostasLegiveis(),
+    });
+    if (!ok) {
+      botao.disabled = false;
+      botao.textContent = "Enviar";
+      erro.textContent = "Não foi possível enviar agora. Verifique sua conexão e tente novamente.";
+      erro.hidden = false;
+      return;
+    }
+    sessao.contatoEnviado = true;
+    renderObrigado(nome);
+  });
+  mostrar("resultado");
+  $("#contato-nome").focus({ preventScroll: true });
+}
+
+function renderObrigado(nome) {
+  const quem = nome ? `, ${esc(nome.split(" ")[0])}` : "";
+  telas.resultado.innerHTML = `
+    <article class="cartao entra">
+      <h2>Recebi suas respostas${quem}!</h2>
+      <p>Vou ler com calma o que você me contou e entrar em contato pelo e-mail ou celular que você deixou.</p>
+      <div class="botoes">
+        ${CONFIG.whatsapp ? linkBotao(`https://wa.me/${CONFIG.whatsapp}`, "Se preferir, me chame no WhatsApp") : ""}
+        ${CONFIG.instagram ? linkBotao(`https://instagram.com/${CONFIG.instagram}`, "Me acompanhar no Instagram", !!CONFIG.whatsapp) : ""}
+      </div>
+    </article>
+    <button class="voltar refazer" type="button" id="inicio">Voltar ao início</button>`;
+  $("#inicio").addEventListener("click", reiniciar);
+  mostrar("resultado");
+}
+
 function reiniciar() {
   respostas = {};
   passo = 0;
   historico = [];
+  sessao = { id: novoId(), diagnosticoEnviado: false, contatoEnviado: false };
   mostrar("inicio");
 }
 
