@@ -1,30 +1,46 @@
-# Link na bio · Diagnóstico do Espaço
+# Link na bio · Gabriele Pinheiro
 
-Página de link na bio para arquitetura de interiores e consultoria. Em vez de uma
-lista de botões, a visitante responde 4 perguntas rápidas e recebe a indicação do
-serviço certo para o momento dela, com o motivo, o que está incluído e o próximo
-passo.
+Página de link na bio para projetos de interiores online na Europa. Em vez de uma
+lista de botões, a visitante responde algumas perguntas rápidas sobre o momento
+da casa dela, e a página mostra qual pode ser o próximo passo.
 
 ## Arquivos
 
 - `index.html`: a página inteira (HTML, CSS e JavaScript, sem servidor).
 - `fontes/`: a fonte Poppins hospedada junto com o site.
 
+## Como funciona
+
+Sete perguntas: momento da casa, quantos ambientes, tipo de mudança, o que o
+projeto deve resolver (múltipla escolha), país e cidade, quando quer começar e
+investimento na execução. As faixas de investimento mudam conforme a
+quantidade de ambientes.
+
+Há três resultados possíveis:
+
+| Situação | Resultado |
+|---|---|
+| "Ainda estou pesquisando" (pula as outras perguntas) | Convite para acompanhar projetos e Instagram |
+| "Estou planejando uma reforma maior" | Explica o foco em interiores e abre a conversa |
+| Todos os outros casos | "Seu projeto parece combinar com a forma como eu trabalho" + conversa |
+
 ## Como personalizar
 
 No `<script>` do `index.html`:
 
-- `CONFIG`: nome, iniciais, foto, bio, cidade, CAU, contatos e links.
+- `CONFIG`: nome, iniciais, foto, bio, CAU, contatos, portfólio e depoimento.
   Campo vazio (`""`) esconde o botão correspondente.
-- `SERVICOS`: nome, descrição, itens incluídos, prazo, investimento e texto do botão.
-- `PERGUNTAS` e `indicar()`: as perguntas e a regra que escolhe a indicação.
+- `FAIXAS`: faixas de investimento para 1 ambiente, 2 ou mais e grande parte da casa.
+- `PAISES`: lista de países da pergunta de local.
+- `PERGUNTAS`, `perfil()` e `TRECHOS`: textos das perguntas, regra do resultado
+  e trechos da frase personalizada.
 
 ### Contato
 
 O WhatsApp ainda **não** está definido. Enquanto `whatsapp` e `instagram`
-estiverem vazios, o botão final vira "Copiar meu diagnóstico": copia o resumo das
-respostas para a pessoa enviar. Quando o número for preenchido, o botão passa a
-abrir o WhatsApp com essa mensagem já escrita.
+estiverem vazios, o botão de conversa copia o resumo das respostas para a
+pessoa enviar. Quando o número for preenchido, o botão passa a abrir o WhatsApp
+com esse resumo já escrito.
 
 ## Como publicar (GitHub Pages, grátis)
 
