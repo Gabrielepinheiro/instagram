@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gabriele Pinheiro · Arquitetura de Interiores</title>
+<meta name="description" content="Descubra em 1 minuto qual serviço de arquitetura de interiores faz sentido para a sua casa agora.">
+<meta property="og:title" content="Gabriele Pinheiro · Arquitetura de Interiores">
+<meta property="og:description" content="Diagnóstico do espaço: 4 perguntas e a indicação certa para o seu momento.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#FAF7F4">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%237B1E2B'/%3E%3Ctext x='32' y='41' text-anchor='middle' font-family='Arial' font-weight='600' font-size='24' fill='%23FAF7F4'%3EGP%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="fontes/poppins.css">
+<style>
+  :root {
+    --bg: #FAF7F4;
+    --surface: #FFFFFF;
+    --text: #4A3428;
+    --text-2: #7D6557;
+    --line: #EADFD7;
+    --accent: #7B1E2B;
+    --accent-hover: #641722;
+    --accent-ink: #FFFFFF;
+    --accent-soft: #F6E9EA;
+    --font: "Poppins", "Segoe UI", system-ui, -apple-system, sans-serif;
+    --radius: 14px;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1A1411; --surface: #231B17; --text: #EDE2DA; --text-2: #BBA597;
+      --line: #3A2E28; --accent: #C75A6B; --accent-hover: #D66E7E; --accent-ink: #1A1411;
+      --accent-soft: #3A2025;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1A1411; --surface: #231B17; --text: #EDE2DA; --text-2: #BBA597;
+    --line: #3A2E28; --accent: #C75A6B; --accent-hover: #D66E7E; --accent-ink: #1A1411;
+    --accent-soft: #3A2025;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html, body { margin: 0; }
+  body {
+    min-height: 100vh;
+    font: 400 15px/1.6 var(--font);
+    color: var(--text);
+    background: var(--bg);
+    padding-inline: 16px;
+    padding-block: calc(36px + env(safe-area-inset-top, 0px)) calc(40px + env(safe-area-inset-bottom, 0px));
+    -webkit-font-smoothing: antialiased;
+  }
+  main, .tela { max-width: 440px; margin: 0 auto; display: grid; gap: 22px; }
+  .tela { width: 100%; }
+  button { font: inherit; color: inherit; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  h1, h2, h3 { margin: 0; text-wrap: balance; color: var(--text); }
+  p { margin: 0; }
+
+  .rotulo {
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .suave { color: var(--text-2); }
+
+  /* ---------- Perfil ---------- */
+  .perfil { display: grid; justify-items: center; text-align: center; gap: 8px; }
+  .foto {
+    width: 92px; height: 92px; border-radius: 50%;
+    display: grid; place-items: center;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 28px; font-weight: 500; letter-spacing: .02em;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+  .foto img { width: 100%; height: 100%; object-fit: cover; }
+  .perfil h1 { font-size: 22px; font-weight: 600; line-height: 1.25; }
+  .perfil p { max-width: 34ch; color: var(--text-2); font-weight: 300; }
+
+  /* ---------- Chamada principal ---------- */
+  .chamada {
+    display: grid; gap: 12px;
+    padding: 24px 22px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+  .chamada h2 { font-size: 20px; font-weight: 600; line-height: 1.3; }
+  .chamada p { color: var(--text-2); font-weight: 300; }
+
+  .btn {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%;
+    padding: 14px 18px;
+    border: 0; border-radius: 999px;
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background .15s ease, transform .15s ease;
+  }
+  .btn:hover { background: var(--accent-hover); }
+  .btn:active { transform: translateY(1px); }
+  .btn-sec {
+    background: transparent; color: var(--accent);
+    border: 1px solid var(--accent);
+  }
+  .btn-sec:hover { background: var(--accent-soft); }
+
+  /* ---------- Links diretos ---------- */
+  .direto { display: grid; gap: 10px; }
+  .link {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 14px 18px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    text-decoration: none;
+    transition: border-color .15s ease;
+  }
+  .link:hover { border-color: var(--accent); }
+  .link strong { display: block; font-weight: 500; }
+  .link small { display: block; color: var(--text-2); font-size: 13px; font-weight: 300; }
+  .link .seta { color: var(--accent); }
+
+  .depoimento {
+    padding: 20px 22px;
+    border-left: 2px solid var(--accent);
+    display: grid; gap: 8px;
+  }
+  .depoimento blockquote { margin: 0; font-weight: 300; font-style: italic; }
+  .depoimento cite { font-style: normal; font-size: 13px; color: var(--text-2); }
+
+  /* ---------- Questionário ---------- */
+  .topo { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .voltar {
+    background: none; border: 0; padding: 6px 0; cursor: pointer;
+    font-size: 13px; font-weight: 500; color: var(--text-2);
+  }
+  .voltar:hover { color: var(--accent); }
+  .passo { font-size: 13px; color: var(--text-2); font-variant-numeric: tabular-nums; }
+
+  /* barra de progresso como linha de cota */
+  .cota { display: grid; grid-template-columns: auto 1fr auto; align-items: center; }
+  .cota .tick { width: 1px; height: 10px; background: var(--accent); }
+  .cota .trilho { position: relative; height: 2px; background: var(--line); }
+  .cota .preenche { position: absolute; inset: 0 auto 0 0; background: var(--accent); transition: width .35s ease; }
+
+  .pergunta { display: grid; gap: 16px; }
+  .pergunta h2 { font-size: 22px; font-weight: 600; line-height: 1.3; }
+  .pergunta .ajuda { margin-top: -8px; color: var(--text-2); font-weight: 300; }
+  .opcoes { display: grid; gap: 10px; }
+  .opcao {
+    display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: start;
+    width: 100%;
+    padding: 14px 16px;
+    text-align: left;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .opcao:hover { border-color: var(--accent); }
+  .opcao[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+  .opcao .letra {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: grid; place-items: center;
+    border: 1px solid var(--line);
+    font-size: 12px; font-weight: 500; color: var(--accent);
+  }
+  .opcao[aria-pressed="true"] .letra { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .opcao strong { display: block; font-weight: 500; }
+  .opcao .dica { display: block; color: var(--text-2); font-size: 13px; font-weight: 300; margin-top: 2px; }
+
+  /* ---------- Resultado ---------- */
+  .cartao {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .cartao-corpo { padding: 24px 22px; display: grid; gap: 14px; }
+  .cartao h2 { font-size: 23px; font-weight: 600; line-height: 1.25; color: var(--accent); }
+  .cartao .resumo { font-weight: 300; }
+  .lista { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+  .lista li { display: grid; grid-template-columns: 16px 1fr; gap: 8px; font-weight: 300; }
+  .lista li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); margin-top: 9px; }
+  .fatos { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding-block: 4px; }
+  .fatos div { display: grid; gap: 2px; }
+  .fatos strong { font-weight: 500; }
+  .nota {
+    padding: 12px 14px; border-radius: 10px;
+    background: var(--accent-soft); font-size: 14px; font-weight: 300;
+  }
+
+  /* resumo no formato do carimbo de uma prancha */
+  .carimbo {
+    display: grid; grid-template-columns: 1fr 1fr;
+    border-top: 1px solid var(--line);
+    font-size: 12.5px;
+  }
+  .carimbo div { padding: 10px 14px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); min-width: 0; }
+  .carimbo div:nth-child(2n) { border-right: 0; }
+  .carimbo div:nth-last-child(-n+2) { border-bottom: 0; }
+  .carimbo span { display: block; font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-2); }
+  .carimbo b { font-weight: 500; overflow-wrap: anywhere; }
+
+  .alternativa {
+    display: grid; gap: 2px; padding: 16px 18px;
+    border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface);
+    text-align: left; cursor: pointer; width: 100%;
+  }
+  .alternativa:hover { border-color: var(--accent); }
+  .alternativa strong { font-weight: 500; color: var(--accent); }
+  .refazer { justify-self: center; }
+
+  .aviso-copia { font-size: 13px; color: var(--text-2); text-align: center; font-weight: 300; }
+  .toast {
+    position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+    transform: translateX(-50%);
+    background: var(--text); color: var(--bg);
+    padding: 10px 18px; border-radius: 999px; font-size: 14px;
+    max-width: calc(100% - 32px);
+  }
+
+  .rodape { text-align: center; font-size: 12px; color: var(--text-2); font-weight: 300; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .entra { animation: entra .3s ease both; }
+    @keyframes entra { from { opacity: .001; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  }
+</style>
+</head>
+<body>
+<main>
+
+  <!-- ================= INÍCIO ================= -->
+  <section id="tela-inicio" class="tela">
+    <header class="perfil">
+      <div class="foto" id="foto" aria-hidden="true">GP</div>
+      <span class="rotulo" id="profissao">Arquitetura de interiores · Consultoria</span>
+      <h1 id="nome">Gabriele Pinheiro</h1>
+      <p id="bio">Projetos que partem de como você vive.</p>
+    </header>
+
+    <div class="chamada">
+      <span class="rotulo">Diagnóstico do espaço · 1 minuto</span>
+      <h2>Qual serviço faz sentido para a sua casa agora?</h2>
+      <p>Responda 4 perguntas rápidas e veja o caminho certo para o seu momento, com o que está incluído e o próximo passo.</p>
+      <button class="btn" id="comecar" type="button">Começar o diagnóstico</button>
+    </div>
+
+    <nav class="direto" id="links" aria-label="Links"></nav>
+
+    <figure class="depoimento" id="depoimento" hidden>
+      <blockquote id="depoimento-texto"></blockquote>
+      <cite id="depoimento-autor"></cite>
+    </figure>
+  </section>
+
+  <!-- ================= PERGUNTAS ================= -->
+  <section id="tela-pergunta" class="tela" hidden>
+    <div class="topo">
+      <button class="voltar" id="voltar" type="button">← Voltar</button>
+      <span class="passo" id="passo">1 de 4</span>
+    </div>
+    <div class="cota" aria-hidden="true">
+      <span class="tick"></span>
+      <div class="trilho"><div class="preenche" id="preenche"></div></div>
+      <span class="tick"></span>
+    </div>
+    <div class="pergunta entra" id="pergunta" aria-live="polite"></div>
+  </section>
+
+  <!-- ================= RESULTADO ================= -->
+  <section id="tela-resultado" class="tela" hidden aria-live="polite"></section>
+
+  <p class="rodape" id="rodape">Arquitetura de interiores</p>
+</main>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+/* ============================================================
+   CONFIGURAÇÃO: edite aqui seus dados e links.
+   Campo vazio ("") = o botão correspondente não aparece.
+   ============================================================ */
+const CONFIG = {
+  nome: "Gabriele Pinheiro",
+  iniciais: "GP",
+  foto: "",            // ex.: "foto.jpg" (arquivo na mesma pasta)
+  bio: "Projetos que partem de como você vive.",
+  cidade: "",          // ex.: "Curitiba e região"
+  cau: "",             // ex.: "CAU A000000-0"
+
+  // Contato. O WhatsApp ainda não foi definido: enquanto estiver vazio,
+  // o botão final copia o diagnóstico para a pessoa enviar.
+  whatsapp: "",        // DDI + DDD + número, só dígitos. Ex.: "5541999999999"
+  instagram: "",       // usuário sem @. Ex.: "gabrielepinheiro.arq"
+
+  // Links opcionais da tela inicial
+  portfolio: "",       // site, Pinterest ou destaque do Instagram
+  guia: "",            // página onde a pessoa recebe o guia gratuito
+
+  // Depoimento real de cliente (deixe vazio para esconder)
+  depoimento: { texto: "", autor: "" },
+};
+
+const SERVICOS = {
+  completo: {
+    nome: "Projeto de Interiores Completo",
+    resumo: "A casa inteira pensada como um conjunto, do levantamento de medidas ao detalhamento que vai para a obra e para a marcenaria.",
+    inclui: [
+      "Visita técnica e levantamento de medidas",
+      "Estudo de layout com duas alternativas",
+      "Imagens 3D de todos os ambientes",
+      "Executivo de marcenaria, iluminação, elétrica e revestimentos",
+      "Lista de compras com quantidades e links",
+    ],
+    prazo: "8 a 12 semanas",
+    investimento: "Sob orçamento",
+    cta: "Quero agendar uma conversa",
+  },
+  ambiente: {
+    nome: "Projeto de Ambiente",
+    resumo: "Um cômodo resolvido por inteiro: cozinha, sala, quarto, home office ou banheiro, com tudo que o marceneiro e o eletricista precisam.",
+    inclui: [
+      "Levantamento do ambiente",
+      "Layout e imagens 3D",
+      "Detalhamento de marcenaria e iluminação",
+      "Lista de compras",
+    ],
+    prazo: "3 a 5 semanas",
+    investimento: "Sob orçamento",
+    cta: "Quero projetar meu ambiente",
+  },
+  consultoria: {
+    nome: "Consultoria Olhar de Arquiteta",
+    resumo: "Um encontro de 90 minutos, presencial ou por vídeo, para decidir layout, cores, iluminação e o que comprar. Você sai com um plano e executa no seu ritmo.",
+    inclui: [
+      "Questionário e fotos do espaço antes do encontro",
+      "90 minutos de consultoria",
+      "Resumo com croquis, paleta e prioridades",
+      "15 dias para tirar dúvidas por mensagem",
+    ],
+    prazo: "Resumo em até 5 dias úteis",
+    investimento: "Valor fixo",
+    cta: "Quero marcar minha consultoria",
+  },
+  compra: {
+    nome: "Consultoria de Compra de Imóvel",
+    resumo: "Antes de assinar: análise da planta ou visita ao imóvel com você para avaliar o potencial, o que dá para mudar e quanto isso tende a custar.",
+    inclui: [
+      "Análise da planta ou visita ao imóvel",
+      "Leitura de luz natural, ventilação e circulação",
+      "Estudo rápido de um layout possível",
+      "Estimativa de reforma por faixas de custo",
+    ],
+    prazo: "Parecer em até 48 h",
+    investimento: "Valor fixo por imóvel",
+    cta: "Quero avaliar um imóvel",
+  },
+  guia: {
+    nome: "Guia: 12 decisões antes de reformar",
+    resumo: "Para quem ainda está juntando referências. O guia organiza o que decidir primeiro, o que costuma estourar o orçamento e como montar um briefing.",
+    inclui: [
+      "Checklist de decisões por etapa",
+      "Os 5 erros de layout mais comuns",
+      "Modelo de briefing para usar com qualquer profissional",
+    ],
+    prazo: "Na hora",
+    investimento: "Gratuito",
+    cta: "Quero receber o guia",
+    link: "guia",
+  },
+};
+
+const PERGUNTAS = [
+  {
+    id: "momento",
+    titulo: "Em que momento você está com o imóvel?",
+    opcoes: [
+      { id: "comprando", label: "Ainda vou comprar ou alugar", dica: "Estou escolhendo entre imóveis ou plantas", motivo: "Você ainda está escolhendo o imóvel", fase: "Escolha do imóvel" },
+      { id: "chaves", label: "Peguei as chaves ou vou reformar", dica: "Imóvel novo, na planta ou reforma grande", motivo: "Você vai reformar ou mobiliar", fase: "Reforma e mobília" },
+      { id: "morando", label: "Já moro e algo não funciona", dica: "Falta espaço, luz, conforto ou identidade", motivo: "Você já mora lá e quer melhorar", fase: "Melhoria" },
+      { id: "inspirando", label: "Estou só me inspirando", dica: "Sem data para começar", motivo: "Você está juntando referências", fase: "Referências" },
+    ],
+  },
+  {
+    id: "escopo",
+    titulo: "Qual o tamanho da mudança que você imagina?",
+    opcoes: [
+      { id: "casa", label: "A casa inteira", dica: "Todos ou quase todos os ambientes", motivo: "A mudança envolve a casa inteira" },
+      { id: "ambiente", label: "Um ou dois ambientes", dica: "Ex.: cozinha, sala integrada, suíte", motivo: "A mudança envolve um ou dois ambientes" },
+      { id: "ajustes", label: "Ajustes pontuais", dica: "Móveis, cores, iluminação, organização", motivo: "Você quer ajustes pontuais" },
+    ],
+  },
+  {
+    id: "participacao",
+    titulo: "Como você quer participar do processo?",
+    opcoes: [
+      { id: "tudo", label: "Quero que alguém cuide de tudo", dica: "Projeto detalhado para entregar a fornecedores", motivo: "Você quer um projeto completo nas mãos" },
+      { id: "direcao", label: "Quero direção e eu executo", dica: "Me diga o que fazer e eu toco", motivo: "Você prefere direção e executar por conta própria" },
+      { id: "naosei", label: "Ainda não sei", dica: "Quero entender as opções", motivo: "Você ainda está avaliando o formato" },
+    ],
+  },
+  {
+    id: "local",
+    titulo: "Onde fica o imóvel?",
+    opcoes: [
+      { id: "perto", label: "Perto de você", dica: "Quero atendimento presencial", motivo: "Atendimento presencial" },
+      { id: "longe", label: "Em outra cidade ou país", dica: "Atendimento 100% online", motivo: "Atendimento online" },
+    ],
+  },
+];
+
+/* ============================================================
+   REGRA DA INDICAÇÃO
+   ============================================================ */
+function indicar(r) {
+  const notas = [];
+  let principal, alternativa;
+
+  if (r.momento === "inspirando") {
+    principal = "guia"; alternativa = "consultoria";
+  } else if (r.momento === "comprando") {
+    principal = "compra";
+    alternativa = r.escopo === "casa" ? "completo" : "ambiente";
+  } else if (r.participacao === "direcao" || r.escopo === "ajustes") {
+    principal = "consultoria";
+    alternativa = r.escopo === "casa" ? "completo" : "ambiente";
+    if (r.escopo === "casa" && r.participacao === "direcao")
+      notas.push("Para a casa inteira, a consultoria vira um plano geral por etapas. Se depois quiser o detalhamento, dá para seguir para o projeto.");
+  } else if (r.escopo === "casa") {
+    principal = "completo"; alternativa = "consultoria";
+  } else {
+    principal = "ambiente"; alternativa = "consultoria";
+  }
+
+  if (r.participacao === "naosei" && principal !== "guia")
+    notas.push("Na dúvida entre formatos, a primeira conversa serve para isso: as diferenças são explicadas olhando para o seu caso.");
+  if (r.local === "longe" && principal !== "guia")
+    notas.push("Atendimento online: você envia medidas e fotos seguindo um roteiro simples, e tudo é acompanhado por vídeo.");
+
+  return { principal, alternativa, notas };
+}
+
+/* ============================================================
+   INTERFACE
+   ============================================================ */
+const $ = (s) => document.querySelector(s);
+const esc = (t) => String(t).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const telas = { inicio: $("#tela-inicio"), pergunta: $("#tela-pergunta"), resultado: $("#tela-resultado") };
+const primeiroNome = CONFIG.nome.split(" ")[0];
+let passo = 0;
+let historico = [];
+const respostas = {};
+
+function mostrar(nome) {
+  for (const [k, el] of Object.entries(telas)) el.hidden = k !== nome;
+  window.scrollTo({ top: 0 });
+}
+
+function toast(texto) {
+  const t = $("#toast");
+  t.textContent = texto;
+  t.hidden = false;
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(() => (t.hidden = true), 3200);
+}
+
+async function copiar(texto) {
+  try {
+    await navigator.clipboard.writeText(texto);
+    return true;
+  } catch {
+    const area = document.createElement("textarea");
+    area.value = texto;
+    area.setAttribute("readonly", "");
+    area.style.position = "fixed";
+    area.style.opacity = "0";
+    document.body.appendChild(area);
+    area.select();
+    let ok = false;
+    try { ok = document.execCommand("copy"); } catch { ok = false; }
+    area.remove();
+    return ok;
+  }
+}
+
+/* Para onde vai o botão de contato, conforme o que estiver configurado. */
+function destinoContato(mensagem) {
+  if (CONFIG.whatsapp) return { href: `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(mensagem)}`, rotulo: "WhatsApp" };
+  if (CONFIG.instagram) return { href: `https://ig.me/m/${CONFIG.instagram}`, rotulo: "Direct", copiarAntes: true };
+  return null;
+}
+
+function opcaoEscolhida(perguntaId) {
+  const p = PERGUNTAS.find((q) => q.id === perguntaId);
+  return p.opcoes.find((o) => o.id === respostas[perguntaId]);
+}
+
+function renderPergunta() {
+  const p = PERGUNTAS[passo];
+  const total = PERGUNTAS.length;
+  $("#passo").textContent = `${passo + 1} de ${total}`;
+  $("#preenche").style.width = `${(passo / total) * 100}%`;
+
+  const ajuda = p.id === "local" && CONFIG.cidade ? `Atendimento presencial em ${CONFIG.cidade}.` : "";
+  const box = $("#pergunta");
+  const tinhaFoco = box.contains(document.activeElement);
+  box.classList.remove("entra"); void box.offsetWidth; box.classList.add("entra");
+  box.innerHTML = `
+    <h2>${p.titulo}</h2>
+    ${ajuda ? `<p class="ajuda">${esc(ajuda)}</p>` : ""}
+    <div class="opcoes">
+      ${p.opcoes.map((o, i) => `
+        <button class="opcao" type="button" data-id="${o.id}" aria-pressed="${respostas[p.id] === o.id}">
+          <span class="letra">${String.fromCharCode(65 + i)}</span>
+          <span><strong>${o.label}</strong>${o.dica ? `<span class="dica">${o.dica}</span>` : ""}</span>
+        </button>`).join("")}
+    </div>`;
+  box.querySelectorAll(".opcao").forEach((b) =>
+    b.addEventListener("click", () => {
+      respostas[p.id] = b.dataset.id;
+      box.querySelectorAll(".opcao").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+      setTimeout(avancar, 180);
+    })
+  );
+  if (tinhaFoco) box.querySelector(".opcao").focus();
+}
+
+function avancar() {
+  historico.push(passo);
+  // quem está só se inspirando vai direto para a indicação
+  if (PERGUNTAS[passo].id === "momento" && respostas.momento === "inspirando") {
+    for (const k of ["escopo", "participacao", "local"]) delete respostas[k];
+    return renderResultado();
+  }
+  passo++;
+  if (passo >= PERGUNTAS.length) return renderResultado();
+  renderPergunta();
+}
+
+function montarMensagem(servicoNome, intro) {
+  const linhas = PERGUNTAS.filter((p) => respostas[p.id]).map((p) => `• ${opcaoEscolhida(p.id).label}`).join("\n");
+  return `Olá, ${primeiroNome}! Fiz o diagnóstico do seu link da bio.\n\n${linhas}\n\n${intro}: ${servicoNome}. Quero saber como funciona.`;
+}
+
+function blocoContato(servico, mensagem) {
+  // link próprio do serviço (ex.: página do guia gratuito)
+  if (servico.link && CONFIG[servico.link])
+    return `<a class="btn" href="${esc(CONFIG[servico.link])}" target="_blank" rel="noopener">${servico.cta} ↗</a>`;
+
+  const destino = destinoContato(mensagem);
+  if (destino && !destino.copiarAntes)
+    return `<a class="btn" href="${esc(destino.href)}" target="_blank" rel="noopener">${servico.cta} ↗</a>`;
+  if (destino && destino.copiarAntes)
+    return `<a class="btn" href="${esc(destino.href)}" target="_blank" rel="noopener" data-copiar>${servico.cta} ↗</a>
+            <p class="aviso-copia">Seu diagnóstico é copiado ao tocar. É só colar na conversa.</p>`;
+  return `<button class="btn" type="button" data-copiar>Copiar meu diagnóstico</button>
+          <p class="aviso-copia">Copie e envie para ${esc(primeiroNome)} pelo canal que preferir.</p>`;
+}
+
+function ligarCopia(raiz, mensagem) {
+  raiz.querySelectorAll("[data-copiar]").forEach((el) =>
+    el.addEventListener("click", async () => {
+      const ok = await copiar(mensagem);
+      toast(ok ? "Diagnóstico copiado" : "Não foi possível copiar. Selecione e copie o resumo acima.");
+    })
+  );
+}
+
+function renderResultado() {
+  const { principal, alternativa, notas } = indicar(respostas);
+  const s = SERVICOS[principal];
+  const alt = SERVICOS[alternativa];
+  const motivos = PERGUNTAS.filter((p) => respostas[p.id]).map((p) => opcaoEscolhida(p.id).motivo);
+  const mensagem = montarMensagem(s.nome, "Indicação");
+  const hoje = new Date().toLocaleDateString("pt-BR");
+  const modalidade = principal === "guia" ? "Digital" : respostas.local === "longe" ? "Online" : "Presencial";
+
+  telas.resultado.innerHTML = `
+    <div class="topo">
+      <button class="voltar" type="button" data-refazer>← Refazer</button>
+      <span class="passo">Sua indicação</span>
+    </div>
+    <article class="cartao entra">
+      <div class="cartao-corpo">
+        <span class="rotulo">Para o seu momento</span>
+        <h2>${s.nome}</h2>
+        <p class="resumo">${s.resumo}</p>
+        <span class="rotulo">Por que este</span>
+        <ul class="lista">${motivos.map((t) => `<li>${t}.</li>`).join("")}</ul>
+        <span class="rotulo">O que está incluído</span>
+        <ul class="lista">${s.inclui.map((t) => `<li>${t}</li>`).join("")}</ul>
+        <div class="fatos">
+          <div><span class="suave">Prazo</span><strong>${s.prazo}</strong></div>
+          <div><span class="suave">Investimento</span><strong>${s.investimento}</strong></div>
+        </div>
+        ${notas.map((n) => `<p class="nota">${n}</p>`).join("")}
+        ${blocoContato(s, mensagem)}
+      </div>
+      <div class="carimbo" aria-label="Resumo do diagnóstico">
+        <div><span>Serviço</span><b>${s.nome}</b></div>
+        <div><span>Modalidade</span><b>${modalidade}</b></div>
+        <div><span>Fase</span><b>${opcaoEscolhida("momento").fase}</b></div>
+        <div><span>Data</span><b>${hoje}</b></div>
+      </div>
+    </article>
+    <button class="alternativa" type="button" id="ver-alt">
+      <span class="suave">Também pode fazer sentido</span>
+      <strong>${alt.nome} →</strong>
+    </button>
+    <button class="voltar refazer" type="button" data-refazer>Refazer o diagnóstico</button>`;
+
+  ligarCopia(telas.resultado, mensagem);
+  $("#ver-alt").addEventListener("click", () => renderAlternativa(alternativa));
+  telas.resultado.querySelectorAll("[data-refazer]").forEach((b) => b.addEventListener("click", reiniciar));
+  mostrar("resultado");
+}
+
+function renderAlternativa(id) {
+  const s = SERVICOS[id];
+  const mensagem = montarMensagem(s.nome, "Tenho interesse em");
+  telas.resultado.innerHTML = `
+    <div class="topo">
+      <button class="voltar" type="button" id="volta-ind">← Voltar à indicação</button>
+      <span class="passo">Alternativa</span>
+    </div>
+    <article class="cartao entra"><div class="cartao-corpo">
+      <h2>${s.nome}</h2>
+      <p class="resumo">${s.resumo}</p>
+      <span class="rotulo">O que está incluído</span>
+      <ul class="lista">${s.inclui.map((t) => `<li>${t}</li>`).join("")}</ul>
+      <div class="fatos">
+        <div><span class="suave">Prazo</span><strong>${s.prazo}</strong></div>
+        <div><span class="suave">Investimento</span><strong>${s.investimento}</strong></div>
+      </div>
+      ${blocoContato(s, mensagem)}
+    </div></article>`;
+  ligarCopia(telas.resultado, mensagem);
+  $("#volta-ind").addEventListener("click", renderResultado);
+  window.scrollTo({ top: 0 });
+}
+
+function reiniciar() {
+  for (const k of Object.keys(respostas)) delete respostas[k];
+  passo = 0;
+  historico = [];
+  mostrar("inicio");
+}
+
+$("#comecar").addEventListener("click", () => { reiniciar(); renderPergunta(); mostrar("pergunta"); });
+$("#voltar").addEventListener("click", () => {
+  if (!historico.length) return mostrar("inicio");
+  passo = historico.pop();
+  renderPergunta();
+});
+
+/* ---------- aplica a configuração na tela inicial ---------- */
+(function montarInicio() {
+  $("#nome").textContent = CONFIG.nome;
+  document.title = `${CONFIG.nome} · Arquitetura de Interiores`;
+  $("#bio").textContent = CONFIG.cidade ? `${CONFIG.bio} Presencial em ${CONFIG.cidade} e online.` : CONFIG.bio;
+
+  const foto = $("#foto");
+  if (CONFIG.foto) foto.innerHTML = `<img src="${esc(CONFIG.foto)}" alt="">`;
+  else foto.textContent = CONFIG.iniciais;
+
+  const links = [];
+  if (CONFIG.portfolio) links.push({ href: CONFIG.portfolio, titulo: "Projetos entregues", sub: "Antes, depois e o que mudou em cada casa" });
+  if (CONFIG.guia) links.push({ href: CONFIG.guia, titulo: "Guia gratuito", sub: "12 decisões para tomar antes de reformar" });
+  const contato = destinoContato(`Olá, ${primeiroNome}! Vim pelo seu link da bio.`);
+  if (contato) links.push({ href: contato.href, titulo: `Falar comigo no ${contato.rotulo}`, sub: "Já sabe o que quer? Me chama direto" });
+  const nav = $("#links");
+  nav.hidden = links.length === 0;
+  nav.innerHTML = links.map((l) => `
+    <a class="link" href="${esc(l.href)}" target="_blank" rel="noopener">
+      <span><strong>${l.titulo}</strong><small>${l.sub}</small></span><span class="seta">↗</span>
+    </a>`).join("");
+
+  if (CONFIG.depoimento.texto) {
+    $("#depoimento").hidden = false;
+    $("#depoimento-texto").textContent = `“${CONFIG.depoimento.texto}”`;
+    $("#depoimento-autor").textContent = CONFIG.depoimento.autor;
+  }
+
+  $("#rodape").textContent = ["Arquitetura de interiores", CONFIG.cau].filter(Boolean).join(" · ");
+})();
+</script>
+</body>
+</html>
