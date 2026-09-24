@@ -1,0 +1,881 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gabriele Pinheiro · Projetos de Interiores</title>
+<meta name="description" content="Projetos de interiores online na Europa. Conte um pouco sobre o seu momento e veja qual pode ser o próximo passo.">
+<meta property="og:title" content="Gabriele Pinheiro · Projetos de Interiores">
+<meta property="og:description" content="Projetos de interiores online na Europa.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#FAF7F4">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%237B1E2B'/%3E%3Ctext x='32' y='41' text-anchor='middle' font-family='Arial' font-weight='600' font-size='24' fill='%23FAF7F4'%3EGP%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="fontes/poppins.css">
+<style>
+  :root {
+    --bg: #FAF7F4;
+    --surface: #FFFFFF;
+    --text: #4A3428;
+    --text-2: #7D6557;
+    --line: #EADFD7;
+    --accent: #7B1E2B;
+    --accent-hover: #641722;
+    --accent-ink: #FFFFFF;
+    --accent-soft: #F6E9EA;
+    --font: "Poppins", "Segoe UI", system-ui, -apple-system, sans-serif;
+    --radius: 14px;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1A1411; --surface: #231B17; --text: #EDE2DA; --text-2: #BBA597;
+      --line: #3A2E28; --accent: #C75A6B; --accent-hover: #D66E7E; --accent-ink: #1A1411;
+      --accent-soft: #3A2025;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1A1411; --surface: #231B17; --text: #EDE2DA; --text-2: #BBA597;
+    --line: #3A2E28; --accent: #C75A6B; --accent-hover: #D66E7E; --accent-ink: #1A1411;
+    --accent-soft: #3A2025;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html, body { margin: 0; }
+  body {
+    min-height: 100vh;
+    font: 400 15px/1.6 var(--font);
+    color: var(--text);
+    background: var(--bg);
+    padding-inline: 16px;
+    padding-block: calc(36px + env(safe-area-inset-top, 0px)) calc(40px + env(safe-area-inset-bottom, 0px));
+    -webkit-font-smoothing: antialiased;
+  }
+  main, .tela { max-width: 440px; margin: 0 auto; display: grid; gap: 22px; }
+  .tela { width: 100%; }
+  button, input, select { font: inherit; color: inherit; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  h1, h2, h3 { margin: 0; text-wrap: balance; color: var(--text); }
+  p { margin: 0; }
+  strong { font-weight: 500; }
+
+  .rotulo {
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .suave { color: var(--text-2); }
+
+  /* ---------- Perfil ---------- */
+  .perfil { display: grid; justify-items: center; text-align: center; gap: 6px; }
+  .foto {
+    width: 92px; height: 92px; border-radius: 50%;
+    display: grid; place-items: center;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 28px; font-weight: 500; letter-spacing: .02em;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .foto img { width: 100%; height: 100%; object-fit: cover; }
+  .perfil h1 { font-size: 22px; font-weight: 600; line-height: 1.25; }
+  .perfil p { max-width: 34ch; color: var(--text-2); font-weight: 300; }
+
+  /* ---------- Chamada principal ---------- */
+  .chamada {
+    display: grid; gap: 12px;
+    padding: 24px 22px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+  .chamada h2 { font-size: 20px; font-weight: 600; line-height: 1.3; }
+  .chamada p { color: var(--text-2); font-weight: 300; }
+
+  .btn {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%;
+    padding: 14px 18px;
+    border: 0; border-radius: 999px;
+    background: var(--accent);
+    color: var(--accent-ink);
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background .15s ease, transform .15s ease, opacity .15s ease;
+  }
+  .btn:hover { background: var(--accent-hover); }
+  .btn:active { transform: translateY(1px); }
+  .btn:disabled { opacity: .4; cursor: not-allowed; }
+  .btn:disabled:hover { background: var(--accent); }
+  .btn-sec { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+  .btn-sec:hover { background: var(--accent-soft); }
+  .botoes { display: grid; gap: 10px; }
+
+  /* ---------- Links diretos ---------- */
+  .direto { display: grid; gap: 10px; }
+  .link {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 14px 18px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    text-decoration: none;
+    transition: border-color .15s ease;
+  }
+  .link:hover { border-color: var(--accent); }
+  .link .seta { color: var(--accent); }
+
+  .depoimento { padding: 20px 22px; border-left: 2px solid var(--accent); display: grid; gap: 8px; margin: 0; }
+  .depoimento blockquote { margin: 0; font-weight: 300; font-style: italic; }
+  .depoimento cite { font-style: normal; font-size: 13px; color: var(--text-2); }
+
+  /* ---------- Perguntas ---------- */
+  .topo { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .voltar {
+    background: none; border: 0; padding: 6px 0; cursor: pointer;
+    font-size: 13px; font-weight: 500; color: var(--text-2);
+  }
+  .voltar:hover { color: var(--accent); }
+  .passo { font-size: 13px; color: var(--text-2); font-variant-numeric: tabular-nums; }
+
+  .cota { display: grid; grid-template-columns: auto 1fr auto; align-items: center; }
+  .cota .tick { width: 1px; height: 10px; background: var(--accent); }
+  .cota .trilho { position: relative; height: 2px; background: var(--line); }
+  .cota .preenche { position: absolute; inset: 0 auto 0 0; background: var(--accent); transition: width .35s ease; }
+
+  .pergunta { display: grid; gap: 16px; }
+  .pergunta h2 { font-size: 21px; font-weight: 600; line-height: 1.35; }
+  .pergunta .ajuda { margin-top: -6px; color: var(--text-2); font-weight: 300; font-size: 14px; }
+  .opcoes { display: grid; gap: 10px; }
+  .opcao {
+    display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: start;
+    width: 100%;
+    padding: 14px 16px;
+    text-align: left;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .opcao:hover { border-color: var(--accent); }
+  .opcao[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+  .opcao .marca {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: grid; place-items: center;
+    border: 1px solid var(--line);
+    font-size: 12px; font-weight: 500; color: var(--accent);
+    background: var(--surface);
+  }
+  .opcao[aria-pressed="true"] .marca { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .multipla .opcao .marca { border-radius: 7px; width: 22px; height: 22px; margin: 3px; font-size: 13px; color: transparent; }
+  .multipla .opcao[aria-pressed="true"] .marca { color: var(--accent-ink); }
+  .opcao .titulo-opcao { display: block; font-weight: 500; }
+  .opcao .dica { display: block; color: var(--text-2); font-size: 13px; font-weight: 300; margin-top: 2px; }
+
+  .campos { display: grid; gap: 14px; }
+  .campo { display: grid; gap: 6px; }
+  .campo label { font-size: 13px; font-weight: 500; }
+  .campo input, .campo select {
+    width: 100%;
+    padding: 13px 14px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    font-size: 15px;
+  }
+  .campo input:focus, .campo select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+  /* ---------- Resultado ---------- */
+  .cartao {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 26px 22px;
+    display: grid; gap: 14px;
+  }
+  .cartao h2 { font-size: 22px; font-weight: 600; line-height: 1.3; color: var(--accent); }
+  .cartao h3 { font-size: 15px; font-weight: 600; margin-top: 6px; }
+  .cartao p { font-weight: 300; }
+  .cartao p strong { font-weight: 500; }
+
+  .refazer { justify-self: center; }
+
+  .campo-tel { display: grid; grid-template-columns: minmax(0, 11em) minmax(0, 1fr); gap: 8px; }
+  .campo input[aria-invalid="true"] { border-color: var(--accent); }
+  .consentimento { display: grid; grid-template-columns: 20px 1fr; gap: 10px; align-items: start; font-size: 13.5px; font-weight: 300; cursor: pointer; }
+  .consentimento input { width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--accent); }
+  .privacidade { font-size: 13px; color: var(--text-2); }
+  .privacidade summary { cursor: pointer; color: var(--accent); font-weight: 500; }
+  .privacidade p { margin-top: 8px; font-weight: 300; }
+  .armadilha { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .erro { color: var(--accent); font-size: 14px; font-weight: 500; }
+  .demo { font-size: 13px; padding: 10px 12px; border-radius: 10px; background: var(--accent-soft); }
+
+  .rodape { text-align: center; font-size: 12px; color: var(--text-2); font-weight: 300; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .entra { animation: entra .3s ease both; }
+    @keyframes entra { from { opacity: .001; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  }
+</style>
+</head>
+<body>
+<main>
+
+  <!-- ================= INÍCIO ================= -->
+  <section id="tela-inicio" class="tela">
+    <header class="perfil">
+      <div class="foto" id="foto" aria-hidden="true">GP</div>
+      <h1 id="nome">Gabriele Pinheiro</h1>
+      <p id="bio">Projetos de interiores online na Europa.</p>
+    </header>
+
+    <div class="chamada">
+      <h2>Está pensando em transformar a sua casa?</h2>
+      <p>Me conte um pouco sobre o seu momento e sobre o que você gostaria de mudar. São algumas perguntas rápidas para eu entender melhor o seu projeto e te mostrar qual pode ser o próximo passo.</p>
+      <button class="btn" id="comecar" type="button">Quero falar sobre meu projeto</button>
+    </div>
+
+    <nav class="direto" id="links" aria-label="Links"></nav>
+
+    <figure class="depoimento" id="depoimento" hidden>
+      <blockquote id="depoimento-texto"></blockquote>
+      <cite id="depoimento-autor"></cite>
+    </figure>
+  </section>
+
+  <!-- ================= PERGUNTAS ================= -->
+  <section id="tela-pergunta" class="tela" hidden>
+    <div class="topo">
+      <button class="voltar" id="voltar" type="button">← Voltar</button>
+      <span class="passo" id="passo">1 de 6</span>
+    </div>
+    <div class="cota" aria-hidden="true">
+      <span class="tick"></span>
+      <div class="trilho"><div class="preenche" id="preenche"></div></div>
+      <span class="tick"></span>
+    </div>
+    <div class="pergunta entra" id="pergunta" aria-live="polite"></div>
+  </section>
+
+  <!-- ================= RESULTADO ================= -->
+  <section id="tela-resultado" class="tela" hidden aria-live="polite"></section>
+
+  <p class="rodape" id="rodape">Projetos de interiores online</p>
+</main>
+
+<script>
+/* ============================================================
+   CONFIGURAÇÃO: edite aqui seus dados e links.
+   Campo vazio ("") = o botão correspondente não aparece.
+   ============================================================ */
+const CONFIG = {
+  nome: "Gabriele Pinheiro",
+  iniciais: "GP",
+  foto: "",            // ex.: "foto.jpg" (arquivo na mesma pasta)
+  bio: "Projetos de interiores online na Europa.",
+  cau: "",             // ex.: "CAU A000000-0"
+
+  // Endereço do Google Apps Script que grava as respostas na sua planilha.
+  // Veja CONFIGURAR-PLANILHA.md. Vazio = modo de demonstração (nada é salvo).
+  endpoint: "",
+
+  // E-mail para pedidos de privacidade (aparece no aviso de privacidade).
+  emailPrivacidade: "",
+
+  // Contatos opcionais. O WhatsApp ainda não foi definido.
+  whatsapp: "",        // DDI + número, só dígitos. Ex.: "351912345678"
+  instagram: "",       // usuário sem @. Ex.: "gabrielepinheiro.interiores"
+
+  // Link opcional para os projetos (site, Pinterest ou destaque do Instagram)
+  portfolio: "",
+
+  // Depoimento real de cliente (deixe vazio para esconder)
+  depoimento: { texto: "", autor: "" },
+};
+
+const PAISES = [
+  "Alemanha", "Áustria", "Bélgica", "Dinamarca", "Espanha", "Finlândia", "França",
+  "Grécia", "Irlanda", "Itália", "Luxemburgo", "Noruega", "Países Baixos",
+  "Polônia", "Portugal", "Reino Unido", "Suécia", "Suíça",
+];
+
+/* Códigos de país para o celular. */
+const DDI = {
+  "Alemanha": "49", "Áustria": "43", "Bélgica": "32", "Dinamarca": "45", "Espanha": "34",
+  "Finlândia": "358", "França": "33", "Grécia": "30", "Irlanda": "353", "Itália": "39",
+  "Luxemburgo": "352", "Noruega": "47", "Países Baixos": "31", "Polônia": "48",
+  "Portugal": "351", "Reino Unido": "44", "Suécia": "46", "Suíça": "41",
+  "Brasil": "55", "Estados Unidos / Canadá": "1",
+};
+
+const PERGUNTAS = [
+  {
+    id: "momento",
+    tipo: "unica",
+    resumo: "Momento",
+    titulo: "Em que momento está a sua casa hoje?",
+    opcoes: [
+      { id: "zero", label: "Estou começando uma casa praticamente do zero", dica: "Tenho poucos móveis ou ainda preciso definir grande parte dos ambientes." },
+      { id: "completar", label: "Já tenho algumas coisas e quero completar a casa", dica: "Quero aproveitar parte do que já tenho e escolher o restante com mais direção." },
+      { id: "transformar", label: "Minha casa já está montada, mas quero transformar alguns ambientes", dica: "Os móveis existem, mas sinto que o espaço ainda não funciona ou não representa o que eu gostaria." },
+      { id: "pesquisando", label: "Ainda estou pesquisando e juntando referências", dica: "Tenho vontade de fazer o projeto, mas ainda não sei quando vou começar." },
+    ],
+  },
+  {
+    id: "ambientes",
+    tipo: "unica",
+    resumo: "Ambientes",
+    titulo: "O que você gostaria de mudar?",
+    opcoes: [
+      { id: "um", label: "Um ambiente", dica: "Ex.: quarto, sala, home office ou quarto infantil." },
+      { id: "dois", label: "Dois ou mais ambientes", dica: "Quero que diferentes espaços da casa conversem entre si." },
+      { id: "casa", label: "Grande parte da casa", dica: "Estou montando ou transformando praticamente toda a casa." },
+    ],
+  },
+  {
+    id: "mudanca",
+    tipo: "unica",
+    resumo: "Tipo de mudança",
+    titulo: "Que tipo de mudança você imagina para esses ambientes?",
+    opcoes: [
+      { id: "mobiliario", label: "Principalmente mobiliário e decoração", dica: "Móveis, iluminação, tapetes, cortinas, arte, objetos e composição." },
+      { id: "complementar", label: "Quero aproveitar parte do que já tenho e complementar", dica: "Algumas coisas permanecem e outras precisam ser escolhidas ou substituídas." },
+      { id: "intervencoes", label: "Além do mobiliário, quero fazer algumas intervenções", dica: "Pintura, papel de parede, iluminação, marcenaria ou troca de alguns acabamentos." },
+      { id: "reforma", label: "Estou planejando uma reforma maior", dica: "Pretendo fazer alterações importantes no imóvel, instalações ou uma obra mais complexa." },
+    ],
+  },
+  {
+    id: "objetivos",
+    tipo: "multipla",
+    resumo: "O que quero resolver",
+    titulo: "O que você mais gostaria que o projeto resolvesse?",
+    ajuda: "Pode escolher mais de uma opção.",
+    opcoes: [
+      { id: "rotina", label: "Fazer a casa funcionar melhor para a nossa rotina" },
+      { id: "seguranca", label: "Escolher móveis e peças com mais segurança" },
+      { id: "aproveitar", label: "Aproveitar melhor o que eu já tenho" },
+      { id: "personalidade", label: "Criar uma casa com mais personalidade" },
+      { id: "coerencia", label: "Deixar os ambientes mais coerentes entre si" },
+      { id: "investir", label: "Saber onde realmente vale investir" },
+      { id: "varias", label: "Tenho várias dessas questões ao mesmo tempo", exclusiva: true },
+    ],
+  },
+  {
+    id: "local",
+    tipo: "local",
+    resumo: "Local",
+    titulo: "Onde fica a sua casa?",
+    ajuda: "Atendo projetos de interiores de forma 100% online.",
+  },
+  {
+    id: "inicio",
+    tipo: "unica",
+    resumo: "Quando quero começar",
+    titulo: "Quando você gostaria de começar?",
+    opcoes: [
+      { id: "logo", label: "O quanto antes" },
+      { id: "1a3", label: "Nos próximos 1 a 3 meses" },
+      { id: "3a6", label: "Nos próximos 3 a 6 meses" },
+      { id: "semdata", label: "Ainda não tenho uma data definida" },
+    ],
+  },
+];
+
+/* ============================================================
+   QUAL RESULTADO MOSTRAR
+   ============================================================ */
+function perfil(r) {
+  if (r.momento === "pesquisando") return "pesquisando";
+  if (r.mudanca === "reforma") return "reforma";
+  return "escopo";
+}
+
+const NOME_PERFIL = { escopo: "Dentro do escopo", pesquisando: "Ainda pesquisando", reforma: "Reforma maior" };
+
+/* Trechos usados na frase do resultado "dentro do escopo". */
+const TRECHOS = {
+  ambientes: { um: "um ambiente", dois: "alguns ambientes", casa: "grande parte da casa" },
+  momento: { zero: "uma casa praticamente nova", completar: "o que você já possui", transformar: "uma casa que já está montada" },
+  mudanca: {
+    mobiliario: "mobiliário, iluminação, têxteis e composição",
+    complementar: "complementar o que já existe com novas escolhas",
+    intervencoes: "mobiliário e algumas intervenções, como pintura, iluminação, marcenaria ou acabamentos",
+  },
+};
+
+/* ============================================================
+   ENVIO PARA A PLANILHA
+   ============================================================ */
+function novoId() {
+  if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+  return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+}
+
+function origem() {
+  try {
+    const utm = new URLSearchParams(location.search).get("utm_source");
+    if (utm) return utm;
+    return document.referrer ? new URL(document.referrer).hostname : "direto";
+  } catch {
+    return "direto";
+  }
+}
+
+/* Envia um registro para o Google Apps Script. Retorna true se saiu do aparelho. */
+async function enviar(dados) {
+  if (!CONFIG.endpoint) {
+    console.info("Modo de demonstração: nada foi salvo.", dados);
+    return true;
+  }
+  try {
+    // "no-cors" + texto simples: é o formato que o Apps Script aceita vindo de outro site.
+    await fetch(CONFIG.endpoint, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(dados),
+      keepalive: true,
+    });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/* Respostas em texto legível, no formato gravado na planilha. */
+function respostasLegiveis() {
+  const texto = (id) => textoResposta(PERGUNTAS.find((p) => p.id === id));
+  return {
+    resultado: NOME_PERFIL[perfil(respostas)],
+    momento: texto("momento"),
+    ambientes: texto("ambientes"),
+    mudanca: texto("mudanca"),
+    objetivos: texto("objetivos"),
+    pais: respostas.local?.pais || "",
+    cidade: respostas.local?.cidade || "",
+    inicio: texto("inicio"),
+  };
+}
+
+/* ============================================================
+   INTERFACE
+   ============================================================ */
+const $ = (s) => document.querySelector(s);
+const esc = (t) => String(t).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const telas = { inicio: $("#tela-inicio"), pergunta: $("#tela-pergunta"), resultado: $("#tela-resultado") };
+const primeiroNome = CONFIG.nome.split(" ")[0];
+let passo = 0;
+let historico = [];
+let respostas = {};
+let sessao = { id: novoId(), diagnosticoEnviado: false, contatoEnviado: false };
+
+function mostrar(nome) {
+  for (const [k, el] of Object.entries(telas)) el.hidden = k !== nome;
+  window.scrollTo({ top: 0 });
+}
+
+const opcoesDe = (p) => p.opcoes || [];
+
+function textoResposta(p) {
+  const r = respostas[p.id];
+  if (r == null) return "";
+  if (p.tipo === "local") return [r.cidade, r.pais].filter(Boolean).join(", ");
+  if (p.tipo === "multipla") return opcoesDe(p).filter((o) => r.includes(o.id)).map((o) => o.label).join("; ");
+  const o = opcoesDe(p).find((x) => x.id === r);
+  return o ? o.label : "";
+}
+
+/* ---------- perguntas ---------- */
+function renderPergunta() {
+  const p = PERGUNTAS[passo];
+  const total = PERGUNTAS.length;
+  $("#passo").textContent = `${passo + 1} de ${total}`;
+  $("#preenche").style.width = `${(passo / total) * 100}%`;
+
+  const box = $("#pergunta");
+  const tinhaFoco = box.contains(document.activeElement);
+  box.classList.remove("entra"); void box.offsetWidth;
+  box.className = `pergunta entra ${p.tipo}`;
+
+  let corpo = "";
+  if (p.tipo === "local") {
+    const r = respostas.local || { pais: "", cidade: "" };
+    const ehOutro = r.pais && !PAISES.includes(r.pais);
+    corpo = `
+      <div class="campos">
+        <div class="campo">
+          <label for="campo-pais">País</label>
+          <select id="campo-pais">
+            <option value="">Selecione</option>
+            ${PAISES.map((n) => `<option ${r.pais === n ? "selected" : ""}>${n}</option>`).join("")}
+            <option value="__outro" ${ehOutro ? "selected" : ""}>Outro país</option>
+          </select>
+        </div>
+        <div class="campo" id="campo-outro-wrap" ${ehOutro ? "" : "hidden"}>
+          <label for="campo-outro">Qual país?</label>
+          <input id="campo-outro" type="text" autocomplete="country-name" maxlength="60" value="${ehOutro ? esc(r.pais) : ""}">
+        </div>
+        <div class="campo">
+          <label for="campo-cidade">Cidade</label>
+          <input id="campo-cidade" type="text" autocomplete="address-level2" maxlength="80" value="${esc(r.cidade || "")}">
+        </div>
+      </div>
+      <button class="btn" type="button" id="continuar">Continuar</button>`;
+  } else {
+    const marca = (o, i) => (p.tipo === "multipla" ? "✓" : String.fromCharCode(65 + i));
+    const marcado = (o) => (p.tipo === "multipla" ? (respostas[p.id] || []).includes(o.id) : respostas[p.id] === o.id);
+    corpo = `
+      <div class="opcoes">
+        ${opcoesDe(p).map((o, i) => `
+          <button class="opcao" type="button" data-id="${o.id}" aria-pressed="${marcado(o)}">
+            <span class="marca" aria-hidden="true">${marca(o, i)}</span>
+            <span><span class="titulo-opcao">${o.label}</span>${o.dica ? `<span class="dica">${o.dica}</span>` : ""}</span>
+          </button>`).join("")}
+      </div>
+      ${p.tipo === "multipla" ? `<button class="btn" type="button" id="continuar">Continuar</button>` : ""}`;
+  }
+
+  box.innerHTML = `
+    <h2>${p.titulo}</h2>
+    ${p.ajuda ? `<p class="ajuda">${p.ajuda}</p>` : ""}
+    ${corpo}`;
+
+  if (p.tipo === "unica") ligarUnica(p, box);
+  if (p.tipo === "multipla") ligarMultipla(p, box);
+  if (p.tipo === "local") ligarLocal(box);
+
+  if (tinhaFoco) (box.querySelector(".opcao, select") || box).focus();
+}
+
+function ligarUnica(p, box) {
+  box.querySelectorAll(".opcao").forEach((b) =>
+    b.addEventListener("click", () => {
+      respostas[p.id] = b.dataset.id;
+      box.querySelectorAll(".opcao").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+      setTimeout(avancar, 180);
+    })
+  );
+}
+
+function ligarMultipla(p, box) {
+  const continuar = box.querySelector("#continuar");
+  const atualizar = () => {
+    const sel = respostas[p.id] || [];
+    box.querySelectorAll(".opcao").forEach((x) => x.setAttribute("aria-pressed", String(sel.includes(x.dataset.id))));
+    continuar.disabled = sel.length === 0;
+  };
+  box.querySelectorAll(".opcao").forEach((b) =>
+    b.addEventListener("click", () => {
+      const id = b.dataset.id;
+      const exclusiva = opcoesDe(p).find((o) => o.exclusiva)?.id;
+      let sel = respostas[p.id] || [];
+      if (sel.includes(id)) sel = sel.filter((x) => x !== id);
+      else if (id === exclusiva) sel = [id];
+      else sel = [...sel.filter((x) => x !== exclusiva), id];
+      respostas[p.id] = sel;
+      atualizar();
+    })
+  );
+  continuar.addEventListener("click", avancar);
+  atualizar();
+}
+
+function ligarLocal(box) {
+  const pais = box.querySelector("#campo-pais");
+  const outroWrap = box.querySelector("#campo-outro-wrap");
+  const outro = box.querySelector("#campo-outro");
+  const cidade = box.querySelector("#campo-cidade");
+  const continuar = box.querySelector("#continuar");
+  const ler = () => {
+    const valorPais = pais.value === "__outro" ? outro.value.trim() : pais.value;
+    outroWrap.hidden = pais.value !== "__outro";
+    respostas.local = { pais: valorPais, cidade: cidade.value.trim() };
+    continuar.disabled = !valorPais || !respostas.local.cidade;
+  };
+  [pais, outro, cidade].forEach((el) => el.addEventListener("input", ler));
+  pais.addEventListener("change", () => { ler(); if (pais.value === "__outro") outro.focus(); });
+  cidade.addEventListener("keydown", (e) => { if (e.key === "Enter" && !continuar.disabled) avancar(); });
+  continuar.addEventListener("click", avancar);
+  ler();
+}
+
+function avancar() {
+  historico.push(passo);
+  // quem ainda está pesquisando vai direto para o resultado
+  if (PERGUNTAS[passo].id === "momento" && respostas.momento === "pesquisando") {
+    respostas = { momento: "pesquisando" };
+    return renderResultado();
+  }
+  passo++;
+  if (passo >= PERGUNTAS.length) return renderResultado();
+  renderPergunta();
+}
+
+/* ---------- resultados ---------- */
+function linkBotao(href, texto, sec) {
+  return `<a class="btn${sec ? " btn-sec" : ""}" href="${esc(href)}" target="_blank" rel="noopener">${texto}</a>`;
+}
+
+function renderResultado() {
+  const tipo = perfil(respostas);
+
+  // registra a resposta (sem dados pessoais) uma vez por diagnóstico concluído
+  if (!sessao.diagnosticoEnviado) {
+    sessao.diagnosticoEnviado = true;
+    enviar({ tipo: "diagnostico", id: sessao.id, origem: origem(), ...respostasLegiveis() });
+  }
+
+  let html = "";
+  if (tipo === "escopo") {
+    const a = TRECHOS.ambientes[respostas.ambientes];
+    const b = TRECHOS.momento[respostas.momento];
+    const c = TRECHOS.mudanca[respostas.mudanca];
+    html = `
+      <article class="cartao entra">
+        <h2>Seu projeto parece combinar com a forma como eu trabalho.</h2>
+        <p>Pelo que você me contou, você está buscando transformar <strong>${a}</strong>, considerando <strong>${b}</strong> e com mudanças que envolvem <strong>${c}</strong>.</p>
+        <p>É exatamente o tipo de contexto que gosto de entender antes de começar um projeto.</p>
+        <h3>Como funciona</h3>
+        <p>Meus projetos de interiores são realizados 100% online.</p>
+        <p>A partir da sua casa, da rotina de quem vive nela, do que precisa permanecer e do investimento disponível, eu desenvolvo as decisões do ambiente como um conjunto: layout, mobiliário, iluminação, cores, materiais, têxteis, decoração e os elementos necessários para que você consiga colocar o projeto em prática.</p>
+        <button class="btn" type="button" data-contato>Quero conversar sobre meu projeto</button>
+      </article>`;
+  }
+
+  if (tipo === "pesquisando") {
+    const botoes = [];
+    if (CONFIG.portfolio) botoes.push(linkBotao(CONFIG.portfolio, "Ver meus projetos"));
+    if (CONFIG.instagram) botoes.push(linkBotao(`https://instagram.com/${CONFIG.instagram}`, "Me acompanhar no Instagram", botoes.length > 0));
+    html = `
+      <article class="cartao entra">
+        <h2>Talvez ainda não seja a hora de começar o projeto, e tudo bem.</h2>
+        <p>Pelo que você respondeu, você ainda está na fase de entender melhor o que deseja para a sua casa.</p>
+        <p>Você pode continuar acompanhando meus projetos, referências e conteúdos e voltar aqui quando sentir que é hora de começar.</p>
+        ${botoes.length ? `<div class="botoes">${botoes.join("")}</div>` : ""}
+      </article>`;
+  }
+
+  if (tipo === "reforma") {
+    html = `
+      <article class="cartao entra">
+        <h2>Pelo que você me contou, sua casa pode precisar de um escopo diferente.</h2>
+        <p>Meu trabalho é focado em projetos de interiores e nas decisões que constroem os ambientes: layout, mobiliário, iluminação, materiais, cores, marcenaria pontual, têxteis e decoração.</p>
+        <p>Quando o imóvel envolve alterações estruturais, grandes mudanças de instalações ou uma reforma de maior complexidade, pode ser necessário contar também com profissionais responsáveis por essas etapas da obra.</p>
+        <p>Se o projeto de interiores fizer parte desse processo, podemos conversar para entender o seu caso.</p>
+        <button class="btn" type="button" data-contato>Quero contar um pouco mais sobre meu projeto</button>
+      </article>`;
+  }
+
+  telas.resultado.innerHTML = `
+    <div class="topo">
+      <button class="voltar" type="button" id="voltar-resultado">← Voltar</button>
+    </div>
+    ${html}
+    <button class="voltar refazer" type="button" id="refazer">Responder novamente</button>`;
+
+  telas.resultado.querySelectorAll("[data-contato]").forEach((b) =>
+    b.addEventListener("click", () => (sessao.contatoEnviado ? renderObrigado() : renderContato()))
+  );
+  $("#voltar-resultado").addEventListener("click", () => {
+    passo = historico.pop() ?? 0;
+    renderPergunta();
+    mostrar("pergunta");
+  });
+  $("#refazer").addEventListener("click", reiniciar);
+  mostrar("resultado");
+}
+
+/* ---------- formulário de contato ---------- */
+function renderContato() {
+  const ddiPadrao = DDI[respostas.local?.pais] || "";
+  const avisoPrivacidade = `
+    Seu nome, e-mail, celular e as respostas deste formulário são usados apenas para eu entrar em contato sobre o seu projeto.
+    Eles ficam guardados numa planilha privada no Google, a que só eu tenho acesso, e não são compartilhados com mais ninguém.
+    As respostas às perguntas também são registradas sem identificação, para estatística.
+    Você pode pedir para ver, corrigir ou apagar seus dados a qualquer momento${CONFIG.emailPrivacidade ? ` pelo e-mail <strong>${esc(CONFIG.emailPrivacidade)}</strong>` : ", é só me pedir"}.`;
+
+  telas.resultado.innerHTML = `
+    <div class="topo">
+      <button class="voltar" type="button" id="voltar-contato">← Voltar</button>
+    </div>
+    <form class="cartao entra" id="form-contato" novalidate>
+      <h2>Para eu entrar em contato com você</h2>
+      <p>Deixe seus dados e eu te procuro para conversarmos sobre o seu projeto.</p>
+      ${CONFIG.endpoint ? "" : `<p class="demo">Modo de demonstração: o endereço da planilha ainda não foi configurado, então nada é salvo.</p>`}
+      <div class="campos">
+        <div class="campo">
+          <label for="contato-nome">Nome</label>
+          <input id="contato-nome" name="nome" type="text" autocomplete="name" maxlength="80" required>
+        </div>
+        <div class="campo">
+          <label for="contato-email">E-mail</label>
+          <input id="contato-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="120" required>
+        </div>
+        <div class="campo">
+          <label for="contato-numero">Celular</label>
+          <div class="campo-tel">
+            <select id="contato-ddi" aria-label="Código do país">
+              <option value="">País</option>
+              ${Object.entries(DDI).map(([pais, cod]) => `<option value="${cod}" ${cod === ddiPadrao ? "selected" : ""}>${pais} (+${cod})</option>`).join("")}
+              <option value="outro">Outro código</option>
+            </select>
+            <input id="contato-numero" name="celular" type="tel" autocomplete="tel-national" inputmode="tel" maxlength="20" required>
+          </div>
+          <div class="campo" id="ddi-outro-wrap" hidden>
+            <label for="contato-ddi-outro">Código do país (só números)</label>
+            <input id="contato-ddi-outro" type="text" inputmode="numeric" maxlength="4">
+          </div>
+        </div>
+        <div class="armadilha" aria-hidden="true">
+          <label for="contato-site">Site</label>
+          <input id="contato-site" name="site" type="text" tabindex="-1" autocomplete="off">
+        </div>
+        <label class="consentimento" for="contato-consentimento">
+          <input id="contato-consentimento" type="checkbox" required>
+          <span>Autorizo ${esc(primeiroNome)} a usar estes dados para entrar em contato comigo sobre o meu projeto.</span>
+        </label>
+        <details class="privacidade">
+          <summary>Como seus dados são usados</summary>
+          <p>${avisoPrivacidade}</p>
+        </details>
+      </div>
+      <p class="erro" id="contato-erro" role="alert" hidden></p>
+      <button class="btn" type="submit" id="contato-enviar">Enviar</button>
+    </form>`;
+
+  const form = $("#form-contato");
+  const ddi = $("#contato-ddi");
+  const ddiOutroWrap = $("#ddi-outro-wrap");
+  ddi.addEventListener("change", () => {
+    ddiOutroWrap.hidden = ddi.value !== "outro";
+    if (ddi.value === "outro") $("#contato-ddi-outro").focus();
+  });
+  $("#voltar-contato").addEventListener("click", renderResultado);
+  form.addEventListener("input", () => { $("#contato-erro").hidden = true; });
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const erro = $("#contato-erro");
+    const nome = $("#contato-nome").value.trim();
+    const email = $("#contato-email").value.trim();
+    const codigo = (ddi.value === "outro" ? $("#contato-ddi-outro").value : ddi.value).replace(/\D/g, "");
+    const numero = $("#contato-numero").value.replace(/\D/g, "");
+    const consentiu = $("#contato-consentimento").checked;
+
+    const problemas = [];
+    const marcar = (id, ok) => $(id).setAttribute("aria-invalid", String(!ok));
+    marcar("#contato-nome", nome.length >= 2);
+    if (nome.length < 2) problemas.push("seu nome");
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+    marcar("#contato-email", emailOk);
+    if (!emailOk) problemas.push("um e-mail válido");
+    const telOk = codigo.length >= 1 && numero.length >= 6 && numero.length <= 15;
+    marcar("#contato-numero", telOk);
+    if (!telOk) problemas.push("o celular com o código do país");
+    if (!consentiu) problemas.push("a autorização de contato");
+
+    if (problemas.length) {
+      erro.textContent = `Falta preencher ${problemas.join(", ").replace(/, ([^,]*)$/, " e $1")}.`;
+      erro.hidden = false;
+      return;
+    }
+    erro.hidden = true;
+
+    const botao = $("#contato-enviar");
+    botao.disabled = true;
+    botao.textContent = "Enviando…";
+    const ok = await enviar({
+      tipo: "contato",
+      id: sessao.id,
+      site: $("#contato-site").value,
+      nome,
+      email,
+      celular: `+${codigo} ${numero}`,
+      consentimento: "Sim",
+      origem: origem(),
+      ...respostasLegiveis(),
+    });
+    if (!ok) {
+      botao.disabled = false;
+      botao.textContent = "Enviar";
+      erro.textContent = "Não foi possível enviar agora. Verifique sua conexão e tente novamente.";
+      erro.hidden = false;
+      return;
+    }
+    sessao.contatoEnviado = true;
+    renderObrigado(nome);
+  });
+  mostrar("resultado");
+  $("#contato-nome").focus({ preventScroll: true });
+}
+
+function renderObrigado(nome) {
+  const quem = nome ? `, ${esc(nome.split(" ")[0])}` : "";
+  telas.resultado.innerHTML = `
+    <article class="cartao entra">
+      <h2>Recebi suas respostas${quem}!</h2>
+      <p>Vou ler com calma o que você me contou e entrar em contato pelo e-mail ou celular que você deixou.</p>
+      <div class="botoes">
+        ${CONFIG.whatsapp ? linkBotao(`https://wa.me/${CONFIG.whatsapp}`, "Se preferir, me chame no WhatsApp") : ""}
+        ${CONFIG.instagram ? linkBotao(`https://instagram.com/${CONFIG.instagram}`, "Me acompanhar no Instagram", !!CONFIG.whatsapp) : ""}
+      </div>
+    </article>
+    <button class="voltar refazer" type="button" id="inicio">Voltar ao início</button>`;
+  $("#inicio").addEventListener("click", reiniciar);
+  mostrar("resultado");
+}
+
+function reiniciar() {
+  respostas = {};
+  passo = 0;
+  historico = [];
+  sessao = { id: novoId(), diagnosticoEnviado: false, contatoEnviado: false };
+  mostrar("inicio");
+}
+
+$("#comecar").addEventListener("click", () => { reiniciar(); renderPergunta(); mostrar("pergunta"); });
+$("#voltar").addEventListener("click", () => {
+  if (!historico.length) return mostrar("inicio");
+  passo = historico.pop();
+  renderPergunta();
+});
+
+/* ---------- aplica a configuração na tela inicial ---------- */
+(function montarInicio() {
+  $("#nome").textContent = CONFIG.nome;
+  document.title = `${CONFIG.nome} · Projetos de Interiores`;
+  $("#bio").textContent = CONFIG.bio;
+
+  const foto = $("#foto");
+  if (CONFIG.foto) foto.innerHTML = `<img src="${esc(CONFIG.foto)}" alt="">`;
+  else foto.textContent = CONFIG.iniciais;
+
+  const links = [];
+  if (CONFIG.portfolio) links.push({ href: CONFIG.portfolio, titulo: "Ver meus projetos" });
+  if (CONFIG.instagram) links.push({ href: `https://instagram.com/${CONFIG.instagram}`, titulo: "Instagram" });
+  const nav = $("#links");
+  nav.hidden = links.length === 0;
+  nav.innerHTML = links.map((l) => `
+    <a class="link" href="${esc(l.href)}" target="_blank" rel="noopener">
+      <span>${l.titulo}</span><span class="seta">↗</span>
+    </a>`).join("");
+
+  if (CONFIG.depoimento.texto) {
+    $("#depoimento").hidden = false;
+    $("#depoimento-texto").textContent = `“${CONFIG.depoimento.texto}”`;
+    $("#depoimento-autor").textContent = CONFIG.depoimento.autor;
+  }
+
+  $("#rodape").textContent = ["Projetos de interiores online", CONFIG.cau].filter(Boolean).join(" · ");
+})();
+</script>
+</body>
+</html>
