@@ -11,10 +11,8 @@ da casa dela, e a página mostra qual pode ser o próximo passo.
 
 ## Como funciona
 
-Sete perguntas: momento da casa, quantos ambientes, tipo de mudança, o que o
-projeto deve resolver (múltipla escolha), país e cidade, quando quer começar e
-investimento na execução. As faixas de investimento mudam conforme a
-quantidade de ambientes.
+Seis perguntas: momento da casa, quantos ambientes, tipo de mudança, o que o
+projeto deve resolver (múltipla escolha), país e cidade e quando quer começar.
 
 Há três resultados possíveis:
 
@@ -30,7 +28,6 @@ No `<script>` do `index.html`:
 
 - `CONFIG`: nome, iniciais, foto, bio, CAU, contatos, portfólio e depoimento.
   Campo vazio (`""`) esconde o botão correspondente.
-- `FAIXAS`: faixas de investimento para 1 ambiente, 2 ou mais e grande parte da casa.
 - `PAISES`: lista de países da pergunta de local.
 - `PERGUNTAS`, `perfil()` e `TRECHOS`: textos das perguntas, regra do resultado
   e trechos da frase personalizada.

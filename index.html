@@ -253,7 +253,7 @@
   <section id="tela-pergunta" class="tela" hidden>
     <div class="topo">
       <button class="voltar" id="voltar" type="button">← Voltar</button>
-      <span class="passo" id="passo">1 de 7</span>
+      <span class="passo" id="passo">1 de 6</span>
     </div>
     <div class="cota" aria-hidden="true">
       <span class="tick"></span>
@@ -293,14 +293,6 @@ const CONFIG = {
 
   // Depoimento real de cliente (deixe vazio para esconder)
   depoimento: { texto: "", autor: "" },
-};
-
-/* Faixas de investimento na execução, conforme a quantidade de ambientes.
-   Ajuste os valores à vontade. */
-const FAIXAS = {
-  um:   ["Até €1.500", "€1.500 a €3.000", "€3.000 a €5.000", "€5.000 a €10.000", "Acima de €10.000"],
-  dois: ["Até €3.000", "€3.000 a €6.000", "€6.000 a €12.000", "€12.000 a €20.000", "Acima de €20.000"],
-  casa: ["Até €8.000", "€8.000 a €15.000", "€15.000 a €30.000", "€30.000 a €50.000", "Acima de €50.000"],
 };
 
 const PAISES = [
@@ -378,18 +370,6 @@ const PERGUNTAS = [
       { id: "1a3", label: "Nos próximos 1 a 3 meses" },
       { id: "3a6", label: "Nos próximos 3 a 6 meses" },
       { id: "semdata", label: "Ainda não tenho uma data definida" },
-    ],
-  },
-  {
-    id: "investimento",
-    tipo: "unica",
-    resumo: "Investimento na execução",
-    titulo: "Para eu projetar considerando possibilidades reais: quanto você imagina investir na execução?",
-    ajuda: "Estou falando do valor destinado ao próprio ambiente (móveis, iluminação, cortinas, tapetes, decoração, marcenaria e eventuais acabamentos), e não do valor do meu projeto.",
-    // as opções dependem da quantidade de ambientes escolhida na pergunta 2
-    opcoes: () => [
-      ...(FAIXAS[respostas.ambientes] || FAIXAS.um).map((label, i) => ({ id: `f${i}`, label })),
-      { id: "naosei", label: "Ainda não sei estimar" },
     ],
   },
 ];
@@ -569,8 +549,6 @@ function renderPergunta() {
 function ligarUnica(p, box) {
   box.querySelectorAll(".opcao").forEach((b) =>
     b.addEventListener("click", () => {
-      // mudar a quantidade de ambientes troca as faixas de investimento
-      if (p.id === "ambientes" && respostas.ambientes !== b.dataset.id) delete respostas.investimento;
       respostas[p.id] = b.dataset.id;
       box.querySelectorAll(".opcao").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
       setTimeout(avancar, 180);
